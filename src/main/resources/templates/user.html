@@ -1,30 +1,122 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <title>Spring Security Example</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>User page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-size: 1.25rem;
+        }
+
+        .topbar {
+            min-height: 60px;
+            background-color: #343a40;
+            color: #ffffff;
+        }
+
+        .topbar strong {
+            font-weight: 700;
+        }
+
+        .topbar .logout {
+            color: rgba(255, 255, 255, .6);
+        }
+
+        .sidebar {
+            min-height: calc(100vh - 60px);
+            background-color: #ffffff;
+            padding-top: 20px;
+        }
+
+        .sidebar .nav-link {
+            border-radius: 4px;
+            padding: 12px 20px;
+        }
+
+        .content {
+            padding: 24px 38px;
+        }
+
+        h1 {
+            font-size: 3.25rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            font-size: 1.55rem;
+            font-weight: 600;
+            background-color: #f7f7f7;
+        }
+
+        .table th,
+        .table td {
+            padding: 16px;
+            vertical-align: middle;
+        }
+    </style>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
-<div>
-    <h2>Информация о пользователе:</h2>
-    <p><strong>ID:</strong> <span th:text="${currentUser.id}"></span></p>
-    <p><strong>Имя пользователя:</strong> <span th:text="${currentUser.username}"></span></p>
-    <p><strong>Email:</strong> <span th:text="${currentUser.email}"></span></p>
-    <p><strong>Роли:</strong>
+<nav class="topbar d-flex align-items-center justify-content-between px-4">
+    <div>
+        <strong th:text="${currentUser.email}">user@mail.ru</strong>
+        <span> with roles: </span>
         <span th:each="role, iterStat : ${currentUser.roles}"
-              th:text="${role.name} + (${iterStat.last} ? '' : ', ')"></span>
-    </p>
-</div>
-
-<div>
-    <form th:action="@{/logout}" method="post">
-        <button type="submit">Выйти</button>
+              th:text="${#strings.replace(role.name, 'ROLE_', '') + (iterStat.last ? '' : ' ')}">USER</span>
+    </div>
+    <form th:action="@{/logout}" method="post" class="m-0">
+        <button type="submit" class="btn btn-link logout p-0">Logout</button>
     </form>
+</nav>
 
-    <a th:href="@{/admin}" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
-        Панель администратора
-    </a>
+<div class="container-fluid">
+    <div class="row">
+        <aside class="col-2 sidebar px-0">
+            <nav class="nav flex-column">
+                <a class="nav-link" th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin</a>
+                <a class="nav-link active bg-primary text-white" th:href="@{/user}">User</a>
+            </nav>
+        </aside>
+
+        <main class="col-10 content">
+            <h1>User information-page</h1>
+
+            <div class="card">
+                <div class="card-header">About user</div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Age</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td th:text="${currentUser.id}">1</td>
+                            <td th:text="${currentUser.firstName}">user</td>
+                            <td th:text="${currentUser.lastName}">user</td>
+                            <td th:text="${currentUser.age}">30</td>
+                            <td th:text="${currentUser.email}">user@mail.ru</td>
+                            <td>
+                                <span th:each="role, iterStat : ${currentUser.roles}"
+                                      th:text="${#strings.replace(role.name, 'ROLE_', '') + (iterStat.last ? '' : ' ')}">USER</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
 </div>
-
 </body>
 </html>

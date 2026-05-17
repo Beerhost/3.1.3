@@ -14,7 +14,8 @@ public interface UserService extends UserDetailsService {
     List<Role> findAllRoles();
     Role findRoleById(Long id);
 
-    void updateUserWithRoles(Long id, String username, String email, String newPassword, Set<Long> roleIds);
+    void updateUserWithRoles(Long id, String firstName, String lastName, Integer age,
+                             String email, String newPassword, Set<Long> roleIds);
 
     void createUserWithRoles(User user, Set<Long> roleIds);
 }

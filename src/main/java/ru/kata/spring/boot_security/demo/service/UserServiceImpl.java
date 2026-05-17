@@ -82,9 +82,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUserWithRoles(Long id, String username, String email, String newPassword, Set<Long> roleIds) {
+    public void updateUserWithRoles(Long id, String firstName, String lastName, Integer age,
+                                    String email, String newPassword, Set<Long> roleIds) {
         User existingUser = findById(id);
-        existingUser.setUsername(username);
+        existingUser.setUsername(email);
+        existingUser.setFirstName(firstName);
+        existingUser.setLastName(lastName);
+        existingUser.setAge(age);
         existingUser.setEmail(email);
 
         if (newPassword != null && !newPassword.trim().isEmpty()) {
@@ -106,6 +110,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void createUserWithRoles(User user, Set<Long> roleIds) {
+        user.setUsername(user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         if (roleIds != null) {

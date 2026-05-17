@@ -24,17 +24,19 @@ public class AdminController {
     @GetMapping
     public String adminPage(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("currentUser", user);
+        model.addAttribute("users", userService.findAll());
         model.addAttribute("roles", userService.findAllRoles());
         model.addAttribute("newUser", new User());
         return "admin";
     }
 
     @GetMapping("/users/list")
-    public String getAllUsers(Model model) {
+    public String getAllUsers(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("currentUser", user);
         model.addAttribute("users", userService.findAll());
         model.addAttribute("roles", userService.findAllRoles());
         model.addAttribute("newUser", new User());
-        return "users";
+        return "admin";
     }
 
     @PostMapping("/users/create")
@@ -54,12 +56,14 @@ public class AdminController {
 
     @PostMapping("/users/update/{id}")
     public String updateUser(@PathVariable Long id,
-                             @RequestParam String username,
+                             @RequestParam String firstName,
+                             @RequestParam String lastName,
+                             @RequestParam Integer age,
                              @RequestParam String email,
                              @RequestParam(value = "password", required = false) String newPassword,
                              @RequestParam(value = "roles", required = false) Set<Long> roleIds) {
 
-        userService.updateUserWithRoles(id, username, email, newPassword, roleIds);
+        userService.updateUserWithRoles(id, firstName, lastName, age, email, newPassword, roleIds);
         return "redirect:/admin/users/list";
     }
 

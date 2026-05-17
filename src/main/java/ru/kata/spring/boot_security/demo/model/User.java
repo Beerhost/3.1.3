@@ -20,6 +20,15 @@ public class User implements UserDetails {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "age")
+    private Integer age;
+
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -48,6 +57,30 @@ public class User implements UserDetails {
 
     public void setUsername(String  username) {
         this.username = username;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     @Override
