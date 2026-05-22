@@ -99,24 +99,13 @@
                             <th>Role</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td th:text="${currentUser.id}">1</td>
-                            <td th:text="${currentUser.firstName}">user</td>
-                            <td th:text="${currentUser.lastName}">user</td>
-                            <td th:text="${currentUser.age}">30</td>
-                            <td th:text="${currentUser.email}">user@mail.ru</td>
-                            <td>
-                                <span th:each="role, iterStat : ${currentUser.roles}"
-                                      th:text="${#strings.replace(role.name, 'ROLE_', '') + (iterStat.last ? '' : ' ')}">USER</span>
-                            </td>
-                        </tr>
-                        </tbody>
+                        <tbody id="currentUserTableBody"></tbody>
                     </table>
                 </div>
             </div>
         </main>
     </div>
 </div>
+<script th:src="@{/js/user.js}"></script>
 </body>
 </html>
